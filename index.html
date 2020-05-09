@@ -7,58 +7,88 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-              <h1 class="display-1">Weather Dashboard</h1>
+    <div class="container" id="weatherDashboard">
+      <div class="container">
+              
+            <div class="row" id="header">
+              <header>
+                <h2>Weather Dashboard</h2>
+              </header>
             </div>
-          </div>
-        </div>
-        
-        <div class ="container" id="formInfo"></div>
+              
+            <div class="row">
+              <div class="col-3" id="searchCityContainer">
+                  <form id="searchCity"></form>
+                  <ul id="cityHistoryList"></ul>
+              </div>
+             
+              <div class="col-9" id="weatherResultsContainer">
+                <div class= "row" id="currentWeatherResults">
+                  <div class = "col-12">
+                    <div class="row" id="currentCityDisplay"><h3>Atlanta (8/15/2019)</h3></div>
+                    <div class="row weatherDisplayRow" id="currTempDisplay"><p>Temperature:90.9 F</p></div>
+                    <div class="row weatherDisplayRow" id="currHumidDisplay"><p>Humidity: 41%</p></div>
+                    <div class="row weatherDisplayRow" id="currWindDisplay"><p>Wind Speed: 4.7 MPH</p></div>
+                    <div class="row weatherDisplayRow" id="CurrUvDisplay">UV Index: 9.49</div>
+                  </div>
+                </div>
+                <div class= "row forcastWeatherResults">
+                  <div class = "col-12" id="fiveDayForecast">
+                    <div class="row" id="fiveDayHeader"><h3>5-Day Forecast:</h3></div>
+                    <div class="row flex-container">
+                          <div class="dailyForecast" id="dailyForcasts1">
+                            <p>8/16/2019</p>
+                            <p>Sunny</p>
+                            <p>Temperature: 86.84 F</p>
+                            <p>Humidity: 43%</p>
+                          </div>
+                          <div class="dailyForecast" id="dailyForcasts2">
+                            <p>8/17/2019</p>
+                            <p>Sunny</p>
+                            <p>Temperature: 91.38 F</p>
+                            <p>Humidity: 33%</p>
+                          </div>
+                          <div class="dailyForecast" id="dailyForcasts3">
+                            <p>8/18/2019</p>
+                            <p>Sunny</p>
+                            <p>Temperature: 88.46 F</p>
+                            <p>Humidity: 37%</p>
+                          </div>
+                          <div class="dailyForecast" id="dailyForcasts4">
+                            <p>8/19/2019</p>
+                            <p>Rainy</p>
+                            <p>Temperature: 81.94 F</p>
+                            <p>Humidity: 57%</p>
+                          </div>
+                          <div class="dailyForecast" id="dailyForcasts5">
+                            <p>8/20/2019</p>
+                            <p>Sunny</p>
+                            <p>Temperature: 83.93 F</p>
+                            <p>Humidity: 51%</p>
+                          </div>
+                      </div>
+                    </div>
+                  
+                  </div>
+                </div>
+              
+              </div>
+            <div>
+
+      </div>
     </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-
-    var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
-    var cityName = "Minneapolis";
-    var cityState = "Minnesota";
-    var zipCode = "55419"
-    
-    var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=";
-    var apiIdURL = "&appid="
-    var openCurrWeatherAPI = currentURL + cityName + apiIdURL + apiKey;
-    
-    console.log(openCurrWeatherAPI);
-
-    $.ajax({
-    url: openCurrWeatherAPI,
-    method: "GET"
-    }).then(function(response) {
-
-    console.log(response);
-    
-    });
-
-    var forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
-    var cntURL = "&cnt="
-    var apiIdURL = "&appid="
-    var numberDays = 5
-    var openForecastWeatherAPI = forecastURL + cityName + cntURL + numberDays + apiIdURL + apiKey;
-    
-    console.log(openForecastWeatherAPI);
-
-    $.ajax({
-    url: openForecastWeatherAPI,
-    method: "GET"
-    }).then(function(response) {
-
-    console.log(response);
-    
-    });
-
-  </script>
+  <script type="text/javascript"></script>
+  <!-- jQuery JS -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+  <!-- JavaScript File -->
+  <script src="script.js"></script>
+  <!-- Bootstap -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 
 </html>
