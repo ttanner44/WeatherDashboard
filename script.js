@@ -15,6 +15,8 @@ method: "GET"
 }).then(function(response1) {
 
 console.log(response1);
+console.log(response1.coord.lon);
+console.log(response1.coord.lat);
 
 });
 
