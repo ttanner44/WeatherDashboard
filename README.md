@@ -1,4 +1,4 @@
-# 06 Server-Side APIs: Weather Dashboard
+Homework assignment # 06 Server-Side APIs: Weather Dashboard
 
 I utilized Third-party APIs to access data and functionality of third party APIs by making requests with specific parameters to a URL. The application is is a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS.
 
@@ -33,13 +33,11 @@ The following image demonstrates the application functionality:
 
 ![weather dashboard demo](./Assets/Capture.PNG)
 
-## Review
-
-You are required to submit the following for review:
+## Deliverables
 
 * The URL of the deployed application.
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+* The URL of the GitHub repository.
 
 - - -
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
