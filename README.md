@@ -2,7 +2,9 @@ Homework assignment # 06 Server-Side APIs: Weather Dashboard
 
 I utilized Third-party APIs from OpenWeather.com to access data and functionality.  I utilized the APIs to make requests with specific parameters to a URL. The application is a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS. 
 
-Upon entry into the app, the users current location is and presented with current and forecasted weather conditions.  The user has the option to search the conditions of other locations.  The other locations are stored (via local storage) and rendered back to the user for future use.
+Upon entry into the app, the users current location is presented with current and forecasted weather conditions.  The user has the option to search the conditions of other locations if desired.  The other locations are stored (via local storage) and rendered back to the user for future use.
+
+The application will display current weather and five days of forecast.
 
 ## User Story
 
