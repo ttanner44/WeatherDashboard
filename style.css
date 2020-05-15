@@ -1,12 +1,15 @@
+/* header */
 #header {
     color: white;
 }
 
+/* lists in current and forecast */
 ul { 
     list-style-type: none;
     padding-left: 0;
 }
-  
+
+/* lists in current and forecast */
 li { 
     font-size: 10pt;
     padding: 5px 0px;
@@ -15,22 +18,26 @@ li {
 .col { 
     padding: 5px;
 }
-  
+
+/* Current History Card */
 .card {
     width: 100%;
     background-color: #ececec;
 }
 
+/* Forecast History Card */
 .forecast-card {
     color: white;
     background-color: blue;
     font-size: 10pt;
 }
-  
+
+/* Search Section */
 .search-section {
     height: 100%;
 }
-  
+
+/* City History */
 .cityList {
     border: solid;
     border-width: thin;
@@ -38,17 +45,17 @@ li {
     padding-left: 2px;
     background-color: lightgrey;
 }
-  
 .cityList:hover {
     background-color: #28a745;
     color: #fff;
 }
 
+/* five day card header */
 #fiveDayHeader {
     margin-left: 10px;
     margin-top: 10px;
 }
-
+/* Overall Container */
 .container {
     margin-top: 5px;
   }
