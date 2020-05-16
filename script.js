@@ -37,6 +37,7 @@ $(document).ready(function () {
             success: true
           }
           getCurWeather(location);
+          console.log(location);
           getForecastWeather(location);
         }
         function error() {
@@ -94,33 +95,34 @@ $(document).ready(function () {
         console.log (loc);
         if (typeof loc === "object") {
             city = `lat=${loc.latitude}&lon=${loc.longitude}`;
+            console.log (city);
         } else {
-            var currentURL = "https://api.openweathermap.org/data/2.5/weather?";
-            var cityName = `q=${loc}`;
-            var unitsURL = "&units=imperial";
-            var apiIdURL = "&appid="
-            var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
-            var openCurrWeatherAPI2 = currentURL + cityName + unitsURL + apiIdURL + apiKey;
-
-            console.log (openCurrWeatherAPI2)
-            // Open weather API to get latitude and longitude... weather request
-            $.ajax({
-                url: openCurrWeatherAPI2,
-                method: "GET",
-            }).then(function (response4) {
-            
-            console.log (response4);
-            var cityLon = response4.coord.lon;
-            var cityLat = response4.coord.lat;
-            city = `lat=${cityLat}&lon=${cityLon}`;
-            
-            console.log(city);
-            
-            // get five days with longitude and latitude
-            getFiveDays(city);
+            city = `q=${loc}`; }
+        var currentURL = "https://api.openweathermap.org/data/2.5/weather?";
+        var cityName = city;
+        var unitsURL = "&units=imperial";
+        var apiIdURL = "&appid="
+        var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
+        var openCurrWeatherAPI2 = currentURL + cityName + unitsURL + apiIdURL + apiKey;
+        console.log (openCurrWeatherAPI2)
+        // Open weather API to get latitude and longitude... weather request
+        $.ajax({
+            url: openCurrWeatherAPI2,
+            method: "GET",
+        }).then(function (response4) {
+        
+        console.log (response4);
+        var cityLon = response4.coord.lon;
+        var cityLat = response4.coord.lat;
+        city = `lat=${cityLat}&lon=${cityLon}`;
+        
+        console.log(city);
+        
+        // get five days with longitude and latitude
+        getFiveDays(city);
 
             });
-        }
+        
     }
     
     // Get five days of weather history using longitude and latitude
