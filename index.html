@@ -28,16 +28,19 @@
         <!-- City Search Funcion -->
         <div class='card search-section'>
           <div class='card-body'>
+            <!-- Search label -->
             <label>Search For a City:</label>            
             <div class="input-group mb-3">
+              <!-- Input box with "Minneapolis" placeholder -->
               <input id="city-search" type="text" class="form-control" placeholder="Minneapolis">
                 <div class="input-group-append">
-                  <button id='getWeather' class="btn btn-success" type="submit">
+                  <!-- search button using primary blue color -->
+                  <button id='getWeather' class="btn btn-primary" type="submit">
                     <i id='getWeatherIcon' class="fas fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
-              <!-- Historyical Cities -->
+              <!-- Historyical Cities Formated Dynamically in Javascript -->
             <div id='past-cities'></div>
           </div>
         </div>
@@ -48,21 +51,29 @@
           <div class='card'>
             <div class='card-body'>
               <!-- Current Weather Card -->
+              <!-- City name loaded dynamically in javascript -->
               <h5 class='card-title' id='cityName'>City</h5>
               <ul>
-                <li><img id='curWeathIcn'></img></li>
-                <li class='card-text' id='curTemp'>Temp:</li>
-                <li class='card-text' id='curHum'>Humidity:</li>
-                <li class='card-text' id='curWind'>Windspeed:</li>
-                <li class='card-text' id='curUv'>UV Index:</li>
+                 <!-- Weather icon loaded dynamically in javascript -->
+                <li><img id='currWeathIcn'></img></li>
+                <!-- Current Temp loaded dynamically in javascript -->
+                <li class='card-text' id='currTemp'>Temp:</li>
+                <!-- Current humidity loaded dynamically in javascript -->
+                <li class='card-text' id='currHum'>Humidity:</li>
+                <!-- Current wind speed loaded dynamically in javascript -->
+                <li class='card-text' id='currWind'>Windspeed:</li>
+                <!-- Current UVI loaded dynamically in javascript -->
+                <li class='card-text' id='currUVI'>UV Index:</li>
               </ul>
             </div>
           </div>
       </div>
       <!-- Five day history cards -->
       <div class='row'>
+          <!-- header for 5 day forecast Container -->
           <h5 class='card-title' id="fiveDayHeader">5-Day Forcast</h5>
       </div>
+      <!-- 5 day forecast loaded dynamically in Javascript -->
       <div class='row' id='forecast'></div>
     </div>
   </div>

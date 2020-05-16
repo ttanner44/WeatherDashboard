@@ -2,51 +2,48 @@
 #header {
     color: white;
 }
-
 /* lists in current and forecast */
 ul { 
     list-style-type: none;
     padding-left: 0;
 }
-
 /* lists in current and forecast */
 li { 
     font-size: 10pt;
     padding: 5px 0px;
 }
-  
+/* forecast column */
 .col { 
-    padding: 5px;
+    padding: 2px;
 }
-
 /* Current History Card */
 .card {
     width: 100%;
     background-color: #ececec;
 }
-
 /* Forecast History Card */
 .forecast-card {
     color: white;
-    background-color: blue;
-    font-size: 10pt;
+    background-color:#0275d8;
+    border-radius: 5px;
+    font-size: 8pt;
 }
-
-/* Search Section */
+/* search section styling */
 .search-section {
     height: 100%;
 }
-
-/* City History */
+/* city history sytling */
 .cityList {
     border: solid;
     border-width: thin;
+    border-radius: 5px;
     margin: 5px;
     padding-left: 2px;
     background-color: lightgrey;
 }
+/* change color when hovering over history list */
 .cityList:hover {
-    background-color: #28a745;
+    background-color: #0275d8;
     color: #fff;
 }
 

@@ -2,49 +2,60 @@ $(document).ready(function () {
 
     // On click of Search or city list
     $('#getWeather,#past-cities').on('click', function () {
-        // get location from user input box
-        let e = $(event.target)[0];
+        // get location from user input if seearch event
+        // or get location from city history if click event from history list
+        let eventTGT = $(event.target)[0];
         let location = "";
-        if (e.id === "getWeather" || e.id === "getWeatherId") {
+        if (eventTGT.id === "getWeather" || eventTGT.id === "getWeatherId") {
           location = $('#city-search').val().trim().toUpperCase();
-        } else if ( e.className === ("cityList") ) {
-          location = e.innerText;
+        } else if ( eventTGT.className === ("cityList") ) {
+          location = eventTGT.innerText;
         }
         if (location == "") return;
-        updateCityStore(location);
-        getCurWeather(location);
+        // update City in local storage, pass location
+        updateCityLocalStore(location);
+        // get current weather for searched location, pass location
+        getCurrWeather(location);
+        // get forecast for searched location, pass location
         getForecastWeather(location);
        });
  
-    // Convert epoch to local time       
+    // Convert Unix timestampe to useable format - See epochconvert.com/programming/javascript
     function convertDate(epoch) {
-
-      let readable = [];
+      let useableDate = [];
+      // use Javascript Date() function to parse date into useable format
       let myDate = new Date(epoch * 1000);
-      readable[0] = (myDate.toLocaleString());
-      readable[1] = ((myDate.toLocaleString().split(", "))[0]);
-      readable[2] = ((myDate.toLocaleString().split(", "))[1]);
-      return readable;
+      useableDate[0] = (myDate.toLocaleString());
+      // need [1] for MM/DD/YYY format
+      useableDate[1] = ((myDate.toLocaleString().split(", "))[0]);
+      useableDate[2] = ((myDate.toLocaleString().split(", "))[1]);
+      // return array, but MM/DD/YYY format will is primary need
+      return useableDate;
     }
 
     // Get current user location
-    function getCurLocation() {
+    function getCurrLocation() {
+        // set location to null
         let location = {};
+        // get latitude and longitude
         function success(position) {
           location = {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             success: true
           }
-          getCurWeather(location);
-          console.log(location);
+          // Get current conditions for current location
+          getCurrWeather(location);
+          // Get forecast for local conditions 
           getForecastWeather(location);
         }
+        // console.log if location is unavailable
         function error() {
           location = { success: false }
           console.log('Could not get location');
           return location;
         }
+        // console.log if browswer doesn't support location
         if (!navigator.geolocation) {
           console.log('Geolocation is not supported by your browser');
         } else {
@@ -53,39 +64,50 @@ $(document).ready(function () {
       }
 
     // Get current locaation weather
-    function getCurWeather(loc) {
-        // start by rendering history
+    function getCurrWeather(loc) {
+        // start by rendering history from local storage
         renderHistory();
+        
+        // reset search value to null
         $('#city-search').val("");
+        
+        // determine if search is based upon city name or lat/lon
         if (typeof loc === "object") {
           city = `lat=${loc.latitude}&lon=${loc.longitude}`;
         } else {
           city = `q=${loc}`;
         }
+        
+        // Set up Open Weather API Query - weather request 
         var currentURL = "https://api.openweathermap.org/data/2.5/weather?";
         var cityName = city;
         var unitsURL = "&units=imperial";
         var apiIdURL = "&appid="
         var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
         var openCurrWeatherAPI = currentURL + cityName + unitsURL + apiIdURL + apiKey;
-        // Open weather API call - weather request
+        
+        // Open weather API query - weather request
         $.ajax({
             url: openCurrWeatherAPI,
             method: "GET"
         }).then(function (response1) {
         
+        // load result into weatherObj
         weatherObj = {
             city: `${response1.name}`,
             wind: response1.wind.speed,
             humidity: response1.main.humidity,
             temp: response1.main.temp,
+            // convert date to usable format [1] = MM/DD/YYYY Format
             date: (convertDate(response1.dt))[1],
             icon: `http://openweathermap.org/img/w/${response1.weather[0].icon}.png`,
             desc: response1.weather[0].description
         }
-        // render current waeather
+
+        // render current waeather passing weatherObj
         renderCurrWeather(weatherObj);
-        // get uvi
+
+        // get uvi index - pass query result
         getUvIndex(response1);
         });
     }
@@ -93,11 +115,16 @@ $(document).ready(function () {
     // get 5 day forecast
     function getForecastWeather(loc) {
         console.log (loc);
+
+        // determiing the type of request.. if an object, we have lat/lon, use it
         if (typeof loc === "object") {
             city = `lat=${loc.latitude}&lon=${loc.longitude}`;
             console.log (city);
+          // else call api using city name 
         } else {
             city = `q=${loc}`; }
+        
+        // Set up Open Weather API Query - weather request 
         var currentURL = "https://api.openweathermap.org/data/2.5/weather?";
         var cityName = city;
         var unitsURL = "&units=imperial";
@@ -105,24 +132,26 @@ $(document).ready(function () {
         var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
         var openCurrWeatherAPI2 = currentURL + cityName + unitsURL + apiIdURL + apiKey;
         console.log (openCurrWeatherAPI2)
-        // Open weather API to get latitude and longitude... weather request
+        
+        // Open weather API query - weather request
         $.ajax({
             url: openCurrWeatherAPI2,
             method: "GET",
         }).then(function (response4) {
         
         console.log (response4);
+
+        // capture lat/lon for subsequent request
         var cityLon = response4.coord.lon;
         var cityLat = response4.coord.lat;
+        // set city with lat/long
         city = `lat=${cityLat}&lon=${cityLon}`;
         
         console.log(city);
         
-        // get five days with longitude and latitude
+        // get five days with longitude and latitude - send lon/lat (w city variable)
         getFiveDays(city);
-
-            });
-        
+        });        
     }
     
     // Get five days of weather history using longitude and latitude
@@ -142,13 +171,15 @@ $(document).ready(function () {
       var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
       var openFcstWeatherAPI = currentURL + cityName + exclHrlURL + unitsURL + apiIdURL + apiKey;
       console.log (openFcstWeatherAPI);
+
       // Open weather api... onecall request
       $.ajax({
           url: openFcstWeatherAPI,
           method: "GET"
       }).then(function (response2) {
-      console.log (response2);
-      for (let i=1; i < (response2.daily.length-2); i++) {
+        console.log (response2);
+        // load weatherObj from response... only a history of 5 days needed
+        for (let i=1; i < (response2.daily.length-2); i++) {
           let cur = response2.daily[i]
           weatherObj = {
               weather: cur.weather[0].description,
@@ -157,8 +188,10 @@ $(document).ready(function () {
               maxTemp: cur.temp.max,
               humidity: cur.humidity,
               uvi: cur.uvi,
+              // convert date to usable format [1] = MM/DD/YYYY Format
               date: (convertDate(cur.dt))[1]
           };
+          // push day to weatherArr
           weatherArr.push(weatherObj);
       }
       // render forecast on page
@@ -167,14 +200,21 @@ $(document).ready(function () {
 
   }
     // render current weather on page
-    function renderCurrWeather(cur) {
-   
+    function renderCurrWeather(currCity) {
+        console.log (currCity);
+        // remove the current forecast
         $('#forecast').empty(); 
-        $('#cityName').text(cur.city + " (" + cur.date + ")");
-        $('#curWeathIcn').attr("src", cur.icon);
-        $('#curTemp').text("Temp: " + cur.temp + " F");
-        $('#curHum').text("Humidity: " + cur.humidity + "%");
-        $('#curWind').text("Windspeed: " + cur.wind + " MPH");
+        // render the current search city
+        $('#cityName').text(currCity.city + " (" + currCity.date + ")");
+        // render the current search city weather icon
+        $('#currWeathIcn').attr("src", currCity.icon);
+        // render the current search city temp
+        $('#currTemp').text("Temp: " + currCity.temp + " F");
+         // render the current search city humidity
+        $('#currHum').text("Humidity: " + currCity.humidity + "%");
+        // render current city search wind speed
+        $('#currWind').text("Windspeed: " + currCity.wind + " MPH");      
+        // note.. UVI called in seperate function
       }
 
       // render 5 day forecast on page
@@ -183,49 +223,57 @@ $(document).ready(function () {
         for (let i = 0; i < cur.length; i++) {
           let $colmx1 = $('<div class="col mx-1">');
           let $cardBody = $('<div class="card-body forecast-card">');
-          let $cardTitle = $('<h5 class="card-title">');
+          let $cardTitle = $('<h6 class="card-title">');
           $cardTitle.text(cur[i].date);
     
-    
+          // format HTML UL Tag
           let $ul = $('<ul>'); 
+          // format HTML image
           let $iconLi = $('<li>');
           let $iconI = $('<img>');
           $iconI.attr('src', cur[i].icon);
-    
+
+          // format HTML for Weather Description
           let $weathLi = $('<li>');
           $weathLi.text(cur[i].weather);
-    
+          // format HTML for Min Temp
           let $tempMinLi = $('<li>');
           $tempMinLi.text('Min Temp: ' + cur[i].minTemp + " F");
-    
+          // format HTML for Max Temp
           let $tempMaxLi = $('<li>');
           $tempMaxLi.text('Max Temp: ' + cur[i].maxTemp + " F");
-    
+          // format HTML for humidity
           let $humLi = $('<li>');
           $humLi.text('Humidity: ' + cur[i].humidity + "%");
     
-          // assemble element
+          // append icon
           $iconLi.append($iconI);
-    
           $ul.append($iconLi);
+          // append weather description
           $ul.append($weathLi);
+          // append temp min
           $ul.append($tempMinLi);
+          // append temp max
           $ul.append($tempMaxLi);
+          // append temp humidity
           $ul.append($humLi);
-    
+          // append date
           $cardTitle.append($ul);
+          // append card title
           $cardBody.append($cardTitle);
+          // append card body
           $colmx1.append($cardBody);
     
           $('#forecast').append($colmx1);
         }
       }
     
-    // get UVI from open weather
-    function getUvIndex(uvLoc) {
+    // get UVI from open weather using UVI Query and format UVI on current weather
+    function getUvIndex(uviLocation) {
+        // Since UVI request searches based upon lat/long, define city using lat/lon
+        city = `&lat=${parseInt(uviLocation.coord.lat)}&lon=${parseInt(uviLocation.coord.lon)}`;
 
-        city = `&lat=${parseInt(uvLoc.coord.lat)}&lon=${parseInt(uvLoc.coord.lon)}`;
-
+        // Initiate API Call to get current weather... use UVI request
         var uviURL = "https://api.openweathermap.org/data/2.5/uvi";
         var apiIdURL = "?appid="
         var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
@@ -236,29 +284,31 @@ $(document).ready(function () {
             url: openUviWeatherAPI,
             method: "GET"
         }).then(function(response3) {
-            
-        let bkcolor = "violet";
-        let uv = parseFloat(response3.value);
+        
+        // initiate background as violet
+        let backgrdColor = "violet";
+        // load respone into UviLevel variable
+        let UviLevel = parseFloat(response3.value);
 
-        if (uv < 3) { 
-            bkcolor = 'green';
-            } else if (uv < 6) { 
-            bkcolor = 'yellow';
-            } else if (uv < 8) { 
-            bkcolor = 'orange';
-            } else if (uv < 11) { 
-            bkcolor = 'red';
-            }
-
-            let title = '<span>UV Index: </span>';
-            let color = title + `<span style="background-color: ${bkcolor}; padding: 0 7px 0 7px;">${response3.value}</span>`;
-
-            $('#curUv').html(color);
+        // determine backgrouind color depending on value
+        if (UviLevel < 3) { 
+            backgrdColor = 'green';
+            } else if (UviLevel < 6) { 
+            backgrdColor = 'yellow';
+            } else if (UviLevel < 8) { 
+            backgrdColor = 'orange';
+            } else if (UviLevel < 11) { 
+            backgrdColor = 'red';
+            }     
+        // insert UVI Lable and value into HTML
+        let uviTitle = '<span>UV Index: </span>';
+        let color = uviTitle + `<span style="background-color: ${backgrdColor}; padding: 0 7px 0 7px;">${response3.value}</span>`;
+        $('#currUVI').html(color);
         }); 
     }
 
-    // update cite store in local storage
-    function updateCityStore(city) {
+    // update city store in local storage
+    function updateCityLocalStore(city) {
         let cityList = JSON.parse(localStorage.getItem("cityList")) || [];
         cityList.push(city); 
         cityList.sort();
@@ -270,21 +320,26 @@ $(document).ready(function () {
         localStorage.setItem('cityList', JSON.stringify(cityList));
     };
 
-    // render city history on page
+    // function to pull city history from local memory - citylist 
     function renderHistory() {
-        // function to pull city history from local memory
+        // JSON parse to pull from local storage 
         let cityList = JSON.parse(localStorage.getItem("cityList")) || [];
-    
+        // build dive for each history location - link to HTML ID="past-cities"
         $('#past-cities').empty();
+        // calls for each row of the CityList array
         cityList.forEach ( function (city) {
-          let cityNameDiv = $('<div>');
-          cityNameDiv.addClass("cityList");
-          cityNameDiv.attr("value",city);
-          cityNameDiv.text(city);
-          $('#past-cities').append(cityNameDiv);
+          // add div tag
+          let cityHistoryNameDiv = $('<div>');
+          // add class of "cityList"
+          cityHistoryNameDiv.addClass("cityList");
+          // add the City Value from local storage
+          cityHistoryNameDiv.attr("value",city);
+          // appends div to next row in past-cities
+          cityHistoryNameDiv.text(city);
+          $('#past-cities').append(cityHistoryNameDiv);
         });
       };
 
     // will get location when page initializes
-    const location = getCurLocation();
+    var location = getCurrLocation();
   });
