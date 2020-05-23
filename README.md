@@ -6,6 +6,8 @@ Upon entry into the app, the users current location is presented with current an
 
 The application will display current weather and five days of forecast.
 
+https://ttanner44.github.io/WeatherDashboard/
+
 ## User Story
 
 ```
@@ -35,12 +37,3 @@ THEN I am presented with the last searched city forecast
 The following image demonstrates the application functionality:
 
 ![weather dashboard demo](./Assets/Capture.PNG)
-
-## Deliverables
-
-* The URL of the deployed application.
-
-* The URL of the GitHub repository.
-
-- - -
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
