@@ -1,4 +1,4 @@
-Weather Dashboard Application
+# Weather Dashboard Application
 
 I utilized Third-party APIs from OpenWeather.com to access data and functionality.  The app utilizes APIs to make requests with specific parameters to a URL. The application is a weather dashboard runs in the browser and features dynamically updated HTML and CSS. 
 
