@@ -25,17 +25,17 @@
     <div class='row'>
 
       <div class='col-md-3'>
-        <!-- City Search Funcion -->
+
         <div class='card search-section'>
+          
           <div class='card-body'>
-            <!-- Search label -->
             <label>Search For a City:</label>            
             <div class="input-group mb-3">
               <!-- Input box with "Minneapolis" placeholder -->
-              <input id="city-search" type="text" class="form-control" placeholder="Minneapolis">
+              <input id="cityEntered" type="text" class="form-control" placeholder="Minneapolis">
                 <div class="input-group-append">
                   <!-- search button using primary blue color -->
-                  <button id='getWeather' class="btn btn-primary" type="submit">
+                  <button id='getEnteredCityWeather' class="btn btn-primary" type="submit">
                     <i id='getWeatherIcon' class="fas fa-search" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -50,19 +50,14 @@
         <div class='row'>
           <div class='card'>
             <div class='card-body'>
-              <!-- Current Weather Card -->
               <!-- City name loaded dynamically in javascript -->
               <h5 class='card-title' id='cityName'>City</h5>
               <ul>
-                 <!-- Weather icon loaded dynamically in javascript -->
+                 <!-- Weather values loaded dynamically in javascript -->
                 <li><img id='currWeathIcn'></img></li>
-                <!-- Current Temp loaded dynamically in javascript -->
                 <li class='card-text' id='currTemp'>Temp:</li>
-                <!-- Current humidity loaded dynamically in javascript -->
                 <li class='card-text' id='currHum'>Humidity:</li>
-                <!-- Current wind speed loaded dynamically in javascript -->
                 <li class='card-text' id='currWind'>Windspeed:</li>
-                <!-- Current UVI loaded dynamically in javascript -->
                 <li class='card-text' id='currUVI'>UV Index:</li>
               </ul>
             </div>
