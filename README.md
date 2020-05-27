@@ -1,10 +1,12 @@
-Homework assignment # 06 Server-Side APIs: Weather Dashboard
+# Weather Dashboard Application
 
-I utilized Third-party APIs from OpenWeather.com to access data and functionality.  I utilized the APIs to make requests with specific parameters to a URL. The application is a weather dashboard that will run in the browser and feature dynamically updated HTML and CSS. 
+I utilized Third-party APIs from OpenWeather.com to access data and functionality.  The app utilizes APIs to make requests with specific parameters to a URL. The application is a weather dashboard runs in the browser and features dynamically updated HTML and CSS. 
 
 Upon entry into the app, the users current location is presented with current and forecasted weather conditions.  The user has the option to search the conditions of other locations if desired.  The other locations are stored (via local storage) and rendered back to the user for future use.
 
 The application will display current weather and five days of forecast.
+
+https://ttanner44.github.io/WeatherDashboard/
 
 ## User Story
 
@@ -35,12 +37,3 @@ THEN I am presented with the last searched city forecast
 The following image demonstrates the application functionality:
 
 ![weather dashboard demo](./Assets/Capture.PNG)
-
-## Deliverables
-
-* The URL of the deployed application.
-
-* The URL of the GitHub repository.
-
-- - -
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
