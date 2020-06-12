@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   // On click of Search or city list
-  $('#getEnteredCityWeather,#past-cities').on('click', function () {
+  $('#getEnteredCityWeather,#past-searches').on('click', function () {
 
         // get location from user input if seearch event
         // or get location from city history if click event from history list
@@ -15,10 +15,10 @@ $(document).ready(function () {
         if (location == "") return;
 
         // update local storage with new city search
-        updateCity (location);
+        updateLocalStorage (location);
         
         // get current weather for searched location, pass location
-        getCurrWeather(location);
+        getCurrentWeather(location);
         
         // get forecast for searched location, pass location
         getForecastWeather(location);
@@ -36,7 +36,7 @@ $(document).ready(function () {
       return convertedDate;
     }
 
-    function updateCity(location) {
+    function updateLocalStorage(location) {
        // update City in local storage
        let cityList = JSON.parse(localStorage.getItem("cityList")) || [];
        cityList.push(location); 
@@ -53,7 +53,7 @@ $(document).ready(function () {
     }
 
     // Get current user location
-    function getCurrLocation() {
+    function establishCurrLocation() {
         
       // set location to null
         let location = {};
@@ -67,7 +67,7 @@ $(document).ready(function () {
           }
       
           // Get current conditions for current location
-          getCurrWeather(location);
+          getCurrentWeather(location);
       
           // Get forecast for local conditions 
           getForecastWeather(location);
@@ -77,7 +77,6 @@ $(document).ready(function () {
         // console.log if location is unavailable
         function error() {
           location = { success: false }
-          console.log('Could not get location');
           return location;
         }
       
@@ -90,13 +89,13 @@ $(document).ready(function () {
       }
 
     // Get current locaation weather
-    function getCurrWeather(loc) {
+    function getCurrentWeather(loc) {
         
         // function to pull city history from local memory - citylist 
         let cityList = JSON.parse(localStorage.getItem("cityList")) || [];
         
-        // build div for each history location - link to HTML ID="past-cities"
-        $('#past-cities').empty();
+        // build div for each history location - link to HTML ID="past-searches"
+        $('#past-searches').empty();
         
         // calls for each row of the CityList array
         cityList.forEach ( function (city) {  
@@ -104,7 +103,7 @@ $(document).ready(function () {
           cityHistoryNameDiv.addClass("cityList");         
           cityHistoryNameDiv.attr("value",city);
           cityHistoryNameDiv.text(city);
-          $('#past-cities').append(cityHistoryNameDiv);
+          $('#past-searches').append(cityHistoryNameDiv);
         });      
         
         // reset search value to null
@@ -145,23 +144,16 @@ $(document).ready(function () {
         }
         
         // render current waeather
-          console.log (weatherObj);
-      
           // remove the current forecast
           $('#forecast').empty(); 
-      
           // render the current search city
           $('#cityName').text(weatherObj.city + " (" + weatherObj.date + ")");
-      
           // render the current search city weather icon
           $('#currWeathIcn').attr("src", weatherObj.icon);
-      
           // render the current search city temp
           $('#currTemp').text("Temperature: " + weatherObj.temp + " " +  "°F");
-      
           // render the current search city humidity
           $('#currHum').text("Humidity: " + weatherObj.humidity + "%");
-      
           // render current city search wind speed
           $('#currWind').text("Windspeed: " + weatherObj.wind + " MPH");      
       
@@ -188,15 +180,10 @@ $(document).ready(function () {
             // initiate background as violet
             let backgrdColor = 'violet';        
             // determine backgrouind color depending on value
-            if (UviLevel < 3) { 
-                backgrdColor = 'green';
-                } else if (UviLevel < 6) { 
-                backgrdColor = 'yellow';
-                } else if (UviLevel < 8) { 
-                backgrdColor = 'orange';
-                } else if (UviLevel < 11) { 
-                backgrdColor = 'red';
-                }     
+            if (UviLevel < 3) {backgrdColor = 'green';} 
+                else if (UviLevel < 6) { backgrdColor = 'yellow';} 
+                else if (UviLevel < 8) { backgrdColor = 'orange';} 
+                else if (UviLevel < 11) {backgrdColor = 'red';}     
         
             // insert UVI Lable and value into HTML
             let uviTitle = '<span>UV Index: </span>';
@@ -208,13 +195,10 @@ $(document).ready(function () {
 
     // get weather forecast for selected city
     function getForecastWeather(loc) {
-        console.log (loc);
 
         // determiing the type of request.. if an object, we have lat/lon, use it
         if (typeof loc === "object") {
-            city = `lat=${loc.latitude}&lon=${loc.longitude}`;
-            console.log (city);
-        
+            city = `lat=${loc.latitude}&lon=${loc.longitude}`;      
         // else call api using city name 
         } else {
             city = `q=${loc}`; }
@@ -226,15 +210,12 @@ $(document).ready(function () {
         var apiIdURL = "&appid="
         var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
         var openCurrWeatherAPI2 = currentURL + cityName + unitsURL + apiIdURL + apiKey;
-        console.log (openCurrWeatherAPI2)
         
         // Open weather API query - weather request
         $.ajax({
             url: openCurrWeatherAPI2,
             method: "GET",
         }).then(function (response4) {
-        
-        console.log (response4);
 
         // capture lat/lon for subsequent request
         var cityLon = response4.coord.lon;
@@ -242,8 +223,6 @@ $(document).ready(function () {
         
         // set city with lat/long
         city = `lat=${cityLat}&lon=${cityLon}`;
-        
-        console.log(city);
         
         // Get five days of weather history using longitude and latitude
         let weatherArr = [];
@@ -253,20 +232,17 @@ $(document).ready(function () {
         var currentURL = "https://api.openweathermap.org/data/2.5/onecall?";
         var cityName = city;
         
-        console.log(city);
         var exclHrlURL = "&exclude=hourly";
         var unitsURL = "&units=imperial";
         var apiIdURL = "&appid=";
         var apiKey = "630e27fa306f06f51bd9ecbb54aae081";
         var openFcstWeatherAPI = currentURL + cityName + exclHrlURL + unitsURL + apiIdURL + apiKey;
-        console.log (openFcstWeatherAPI);
 
         // Open weather api... onecall request
         $.ajax({
             url: openFcstWeatherAPI,
             method: "GET"
         }).then(function (response2) {
-          console.log (response2);
         
           // load weatherObj from response... only a history of 5 days needed
           for (let i=1; i < (response2.daily.length-2); i++) {
@@ -286,13 +262,12 @@ $(document).ready(function () {
             weatherArr.push(weatherObj);
           }
           // render forecast on page
-          console.log(weatherArr);
-
           // one iteration for each day of forecast history
           for (let i = 0; i < weatherArr.length; i++) {
             let $colmx1 = $('<div class="col mx-1">');
             let $cardBody = $('<div class="card-body forecast-card">');
             let $cardTitle = $('<h6 class="card-title">');
+           
             $cardTitle.text(weatherArr[i].date);
 
             // format HTML UL Tag
@@ -306,7 +281,7 @@ $(document).ready(function () {
             let $tempMinLi = $('<li>');
             let $humLi = $('<li>');
 
-            // format html values
+            // format html values; Icon, Max, Min & Humidity
             $iconI.attr('src', weatherArr[i].icon);
             $weathLi.text(weatherArr[i].weather);                
             $tempMaxLi.text('Temp High: ' + weatherArr[i].maxTemp + " °F");
@@ -332,5 +307,5 @@ $(document).ready(function () {
     
 
     // will get location when page initializes
-    var location = getCurrLocation();
+    var location = establishCurrLocation();
   });
